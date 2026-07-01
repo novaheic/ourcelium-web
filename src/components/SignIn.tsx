@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
 export default function SignIn() {
@@ -10,6 +11,7 @@ export default function SignIn() {
   const [error, setError] = useState<string | null>(null)
   const [mode, setMode] = useState<'signin' | 'signup'>('signin')
 
+  const router = useRouter()
   const supabase = createClient()
 
   async function handleOAuth(provider: 'github' | 'google') {
@@ -40,12 +42,11 @@ export default function SignIn() {
       setError(error.message)
       setLoading(false)
     } else if (mode === 'signup') {
-      setError(null)
-      // Show confirmation message — user needs to verify email
       setLoading(false)
       alert('Check your email to confirm your account, then sign in.')
+    } else {
+      router.push('/dashboard')
     }
-    // On successful sign-in, middleware + supabase will redirect to /dashboard
   }
 
   return (
