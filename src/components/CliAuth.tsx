@@ -22,7 +22,10 @@ export default function CliAuth() {
         return
       }
 
-      sessionStorage.setItem('ourcelium_cli_port', port)
+      // Readable server-side by /auth/callback so the OAuth redirect chain
+      // can relay straight to the local server without depending on a
+      // follow-up /dashboard request recognizing the new session.
+      document.cookie = `ourcelium_cli_port=${port}; path=/; max-age=300; samesite=lax`
       setCheckingSession(false)
     }
 

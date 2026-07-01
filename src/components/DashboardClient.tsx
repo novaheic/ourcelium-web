@@ -39,11 +39,12 @@ export default function DashboardClient({ user }: Props) {
       const { data: { session } } = await supabase.auth.getSession()
       if (!session) { router.push('/'); return }
 
-      // If we got here as part of the extension/CLI sign-in relay, hand the
-      // token to the local callback server instead of loading the dashboard.
-      const cliPort = sessionStorage.getItem('ourcelium_cli_port')
+      // If we got here as part of the extension/CLI email/password sign-in
+      // relay (OAuth is relayed directly from /auth/callback instead), hand
+      // the token to the local callback server instead of loading the dashboard.
+      const cliPort = document.cookie.match(/(?:^|; )ourcelium_cli_port=([^;]+)/)?.[1]
       if (cliPort) {
-        sessionStorage.removeItem('ourcelium_cli_port')
+        document.cookie = 'ourcelium_cli_port=; path=/; max-age=0'
         setCliRelayed(true)
         window.location.href = `http://localhost:${cliPort}/callback#access_token=${session.access_token}`
         return
