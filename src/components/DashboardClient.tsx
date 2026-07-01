@@ -31,26 +31,25 @@ export default function DashboardClient({ user }: Props) {
   useEffect(() => {
     async function init() {
       const supabase = createClient()
-      let key = apiKey
 
-      if (!key) {
-        // Get the current session access token to call /v1/keys
-        const { data: { session } } = await supabase.auth.getSession()
-        if (!session) { router.push('/'); return }
+      // Always call /v1/keys — it's idempotent and guarantees the key exists in the DB.
+      // Skipping this based on user_metadata can break when the key was created against
+      // a different database (e.g. local dev Docker vs production Supabase).
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) { router.push('/'); return }
 
-        const res = await fetch(`${GATEWAY}/v1/keys`, {
-          method: 'POST',
-          headers: { Authorization: `Bearer ${session.access_token}` },
-        })
-        if (!res.ok) { setError('Failed to initialize your account. Please refresh.'); setLoadingUsage(false); return }
+      const keysRes = await fetch(`${GATEWAY}/v1/keys`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      })
+      if (!keysRes.ok) { setError('Failed to initialize your account. Please refresh.'); setLoadingUsage(false); return }
 
-        const { key: newKey } = await res.json()
-        key = newKey
-        setApiKey(newKey)
+      const { key: freshKey } = await keysRes.json()
+      setApiKey(freshKey)
+      const key = freshKey
 
-        // Refresh session so user_metadata.api_key is populated for future loads
-        await supabase.auth.refreshSession()
-      }
+      // Refresh session so user_metadata.api_key reflects any newly issued key
+      await supabase.auth.refreshSession()
 
       // Fetch usage
       try {
