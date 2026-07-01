@@ -26,6 +26,7 @@ export default function DashboardClient({ user }: Props) {
   const [loadingUsage, setLoadingUsage] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [topupLoading, setTopupLoading] = useState(false)
+  const [cliRelayed, setCliRelayed] = useState(false)
 
   // Issue API key if not present, then fetch usage
   useEffect(() => {
@@ -37,6 +38,16 @@ export default function DashboardClient({ user }: Props) {
       // a different database (e.g. local dev Docker vs production Supabase).
       const { data: { session } } = await supabase.auth.getSession()
       if (!session) { router.push('/'); return }
+
+      // If we got here as part of the extension/CLI sign-in relay, hand the
+      // token to the local callback server instead of loading the dashboard.
+      const cliPort = sessionStorage.getItem('ourcelium_cli_port')
+      if (cliPort) {
+        sessionStorage.removeItem('ourcelium_cli_port')
+        setCliRelayed(true)
+        window.location.href = `http://localhost:${cliPort}/callback#access_token=${session.access_token}`
+        return
+      }
 
       const keysRes = await fetch(`${GATEWAY}/v1/keys`, {
         method: 'POST',
@@ -114,6 +125,14 @@ export default function DashboardClient({ user }: Props) {
 
   const usedPct = usage ? Math.min((usage.used_tokens / usage.cap) * 100, 100) : 0
   const resetDate = usage ? new Date(usage.reset_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '—'
+
+  if (cliRelayed) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center">
+        <p className="text-white/60 text-sm">Connected — you can return to your editor.</p>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
