@@ -231,7 +231,7 @@ export default function DashboardClient({ user }: Props) {
                 onClick={handleUpgrade}
                 className="w-full bg-white text-black font-semibold py-3 rounded-lg hover:bg-white/90 transition-colors text-sm"
               >
-                Upgrade to Pro — $10/month
+                Upgrade to Pro — €10/month
               </button>
             ) : (
               <>
@@ -240,7 +240,7 @@ export default function DashboardClient({ user }: Props) {
                   <p className="text-sm text-white/40 mb-3">Buy more tokens</p>
                   <div className="grid grid-cols-3 gap-3">
                     {(['S', 'M', 'L'] as const).map((pack, i) => {
-                      const labels = ['10M — $5', '20M — $10', '40M — $20']
+                      const labels = ['10M — €5', '20M — €10', '40M — €20']
                       return (
                         <button
                           key={pack}

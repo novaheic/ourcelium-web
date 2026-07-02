@@ -64,7 +64,7 @@ export default async function HomePage() {
         <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
           <div className="border border-white/10 rounded-xl p-8">
             <div className="text-white/40 text-sm font-medium mb-2">Free</div>
-            <div className="text-4xl font-bold mb-1">$0</div>
+            <div className="text-4xl font-bold mb-1">€0</div>
             <div className="text-white/40 text-sm mb-6">forever</div>
             <ul className="space-y-3 text-sm text-white/70">
               <li className="flex items-center gap-2"><span className="text-green-400">✓</span> 2M tokens / month</li>
@@ -75,7 +75,7 @@ export default async function HomePage() {
           </div>
           <div className="border border-white/20 rounded-xl p-8 bg-white/[0.03]">
             <div className="text-white/40 text-sm font-medium mb-2">Pro</div>
-            <div className="text-4xl font-bold mb-1">$10</div>
+            <div className="text-4xl font-bold mb-1">€10</div>
             <div className="text-white/40 text-sm mb-6">per month</div>
             <ul className="space-y-3 text-sm text-white/70">
               <li className="flex items-center gap-2"><span className="text-green-400">✓</span> 25M tokens / month</li>
@@ -86,7 +86,7 @@ export default async function HomePage() {
           </div>
         </div>
         <p className="text-center text-white/30 text-xs mt-6">
-          Extra token packs (Pro only): $5 / 10M · $10 / 20M · $20 / 40M
+          Extra token packs (Pro only): €5 / 10M · €10 / 20M · €20 / 40M
         </p>
       </section>
 
