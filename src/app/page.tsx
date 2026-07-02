@@ -52,7 +52,7 @@ export default async function HomePage() {
               Interactive REPL in your terminal. <code className="text-white/80">@file</code> context, slash commands, permission prompts.
             </p>
             <code className="block bg-white/5 rounded-lg px-4 py-3 text-sm font-mono text-white/80">
-              brew install ourcelium
+              brew install novaheic/ourcelium/ourcelium
             </code>
           </div>
         </div>
