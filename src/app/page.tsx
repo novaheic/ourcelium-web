@@ -22,7 +22,7 @@ export default async function HomePage() {
       <section className="max-w-6xl mx-auto px-6 pt-24 pb-16 text-center">
         <h1 className="text-5xl font-bold tracking-tight mb-4">AI coding at your pace</h1>
         <p className="text-xl text-white/60 max-w-2xl mx-auto mb-10">
-          A VS Code extension and CLI powered by Qwen3-235B. 2M tokens free every month — no credit card needed.
+          A VS Code extension and CLI powered by MiniMax M3. 2M tokens free every month — no credit card needed.
         </p>
         <a
           href="#signin"
